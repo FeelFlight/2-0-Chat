@@ -1,3 +1,10 @@
 FROM python:latest
 
-EXPOSE 80
+ADD  requirements.txt requirements.txt
+RUN  pip install -r   requirements.txt
+
+ADD mcp.py mcp.py
+
+EXPOSE 8020
+
+CMD python mcp.py
