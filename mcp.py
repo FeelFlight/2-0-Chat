@@ -29,24 +29,31 @@ def prepareanswer(r, msg):
         if r['chat']['output']['action'] == "EatDrink":
             print("Bring %s to %s" % (r['chat']['context']['DrinkOrFood'], msg['from']['username']))
 
-    return r['chat']['output']['text'][0]
+    if 'text' in r['chat']['output'] and len(r['chat']['output']['text']) > 0:
+        return r['chat']['output']['text'][0]
+    else:
+        return "No valid answer from NLP system, please contact Sandra"
+
 
 def handle(msg):
+    print("Message received")
+    print(msg['text'])
     uID    = msg['from']['id']
-    uName  = msg['from']['username']
-    uFName = msg['from']['first_name']
+    #uName  = msg['from']['username']
+    #uFName = msg['from']['first_name']
     text   = msg['text']
     r      = json.loads(requests.post('http://conversation:8011/api/v1.0/conversation/process',
                                       json={'text': text, "telegramid": uID},
                                       auth=('ansi', 'test')
                                       ).content
-                        )
+                       )
     bot.sendMessage(uID, prepareanswer(r, msg))
 
 
 bot  = telepot.Bot(tgmtoken)
 bot.message_loop(handle)
 bot.sendMessage(276371592, 'Start Feelflight Bot')
+bot.sendMessage(457425242, 'Start Feelflight Bot')
 
 
 @app.route('/api/v1.0/chat/send', methods=['POST'])
@@ -62,4 +69,5 @@ def process_text():
 
 
 if __name__ == '__main__':
+    print("2-0-chat started")
     app.run(host="::", port=8020)

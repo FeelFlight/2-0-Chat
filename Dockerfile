@@ -7,4 +7,4 @@ ADD mcp.py mcp.py
 
 EXPOSE 8020
 
-CMD python mcp.py
+CMD ["python","-u","mcp.py"]
