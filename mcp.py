@@ -15,22 +15,21 @@ def get_password(username):
         return 'test'
     return None
 
-
 @auth.error_handler
 def unauthorized():
     return make_response(jsonify({'error': 'Unauthorized access'}), 401)
 
 
 def prepareanswer(r, msg):
-    #print(json.dumps(r, indent=2, sort_keys=True))
+    print(json.dumps(r, indent=2, sort_keys=True))
 
-    if 'action' in r['chat']['output']:
+    if 'action' in r['output']:
 
-        if r['chat']['output']['action'] == "EatDrink":
-            print("Bring %s to %s" % (r['chat']['context']['DrinkOrFood'], msg['from']['username']))
+        if r['output']['action'] == "EatDrink":
+            print("Bring %s to %s" % (r['context']['DrinkOrFood'], msg['from']['username']))
 
-    if 'text' in r['chat']['output'] and len(r['chat']['output']['text']) > 0:
-        return r['chat']['output']['text'][0]
+    if 'text' in r['output'] and len(r['output']['text']) > 0:
+        return r['output']['text'][0]
     else:
         return "No valid answer from NLP system, please contact Sandra"
 
@@ -53,7 +52,6 @@ bot.message_loop(handle)
 bot.sendMessage(276371592, 'Start Feelflight Bot')
 bot.sendMessage(457425242, 'Start Feelflight Bot')
 
-
 @app.route('/api/v1.0/chat/send', methods=['POST'])
 @auth.login_required
 def process_text():
@@ -64,7 +62,6 @@ def process_text():
         bot.sendMessage(uID, text)
         return make_response(jsonify({'done': 'done'}), 200)
     return make_response(jsonify({'error': 'Not a valid json'}), 401)
-
 
 if __name__ == '__main__':
     print("2-0-chat started")
