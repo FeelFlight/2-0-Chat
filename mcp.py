@@ -39,11 +39,9 @@ def handle(msg):
     print("Message received")
     print(msg['text'])
     uID    = msg['from']['id']
-    #uName  = msg['from']['username']
-    #uFName = msg['from']['first_name']
     text   = msg['text']
     r      = json.loads(requests.post('http://conversation:8011/api/v1.0/conversation/process',
-                                      json={'text': text, "telegramid": uID},
+                                      json={'text': text, "telegramid": uID, "telegrammsg": msg},
                                       auth=('ansi', 'test')
                                       ).content
                        )
