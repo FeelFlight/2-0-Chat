@@ -34,15 +34,13 @@ def prepareanswer(r, msg):
     if 'action' in r['output']:
 
         if r['output']['action'] == "EatDrink":
-            entry = {"drinkFood": r['context']['DrinkOrFood'], "seat": "23F"}
+            entry = {"drinkFood": r['context']['DrinkOrFood'], "seat": "23F", "name": "Ansgar Schmidt", "new": False, "done": False}
             ordersdb = couch['orders']
             ordersdb.save(entry)
-            print(entry)
             print("Bring %s to %s" % (r['context']['DrinkOrFood'], msg['from']['username']))
 
         if r['output']['action'] == "NewUser":
             print("Bring %s to %s" % (r['context']['DrinkOrFood'], msg['from']['username']))
-
 
     if 'text' in r['output'] and len(r['output']['text']) > 0:
         return r['output']['text'][0]
