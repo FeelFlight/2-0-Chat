@@ -9,7 +9,7 @@ from   flask_httpauth import HTTPBasicAuth
 app      = Flask(__name__)
 auth     = HTTPBasicAuth()
 tgmtoken = os.environ['TGM-TOKEN']
-couch    = couchdb.Server('http://%s:5984/' % os.environ.get("CENTRAL_COUCHDB_SERVER", "localhost")
+couch    = couchdb.Server('http://%s:5984/' % os.environ.get("CENTRAL_COUCHDB_SERVER", "localhost"))
 
 
 @auth.get_password
