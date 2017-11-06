@@ -1,3 +1,4 @@
+couchdb
 telepot
 requests
 flask

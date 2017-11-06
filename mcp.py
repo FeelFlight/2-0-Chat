@@ -1,5 +1,6 @@
 import os
 import json
+import couchdb
 import telepot
 import requests
 from   flask          import Flask, jsonify, request, make_response
@@ -8,6 +9,8 @@ from   flask_httpauth import HTTPBasicAuth
 app      = Flask(__name__)
 auth     = HTTPBasicAuth()
 tgmtoken = os.environ['TGM-TOKEN']
+couch    = couchdb.Server('http://%s:5984/' os.environ.get("CENTRAL_COUCHDB_SERVER", "localhost")
+
 
 @auth.get_password
 def get_password(username):
@@ -21,12 +24,19 @@ def unauthorized():
 
 
 def prepareanswer(r, msg):
-    print(json.dumps(r, indent=2, sort_keys=True))
+    #print(json.dumps(r, indent=2, sort_keys=True))
 
     if 'action' in r['output']:
 
         if r['output']['action'] == "EatDrink":
+            entry = {"drinkFood": r['context']['DrinkOrFood'], "seat": "23F"}
+            db = couchdb['orders']
+            db.save(entry)
             print("Bring %s to %s" % (r['context']['DrinkOrFood'], msg['from']['username']))
+
+        if r['output']['action'] == "NewUser":
+            print("Bring %s to %s" % (r['context']['DrinkOrFood'], msg['from']['username']))
+
 
     if 'text' in r['output'] and len(r['output']['text']) > 0:
         return r['output']['text'][0]
