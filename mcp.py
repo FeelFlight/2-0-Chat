@@ -35,8 +35,8 @@ def prepareanswer(r, msg):
 
         if r['output']['action'] == "EatDrink":
             entry = {"drinkFood": r['context']['DrinkOrFood'], "seat": "23F"}
-            #db = couchdb['orders']
-            #db.save(entry)
+            ordersdb = couch['orders']
+            ordersdb.save(entry)
             print(entry)
             print("Bring %s to %s" % (r['context']['DrinkOrFood'], msg['from']['username']))
 
