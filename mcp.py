@@ -11,6 +11,11 @@ auth     = HTTPBasicAuth()
 tgmtoken = os.environ['TGM-TOKEN']
 couch    = couchdb.Server('http://%s:5984/' % os.environ.get("CENTRAL_COUCHDB_SERVER", "localhost"))
 
+try:
+    db = couch['orders']
+except Exception as e:
+    db = couch.create('orders')
+
 
 @auth.get_password
 def get_password(username):
